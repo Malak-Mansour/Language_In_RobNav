@@ -15,7 +15,7 @@ import re
 load_dotenv()
 
 # Initialize the Groq model with the specified parameters
-model = ChatGroq(model="llama-3.2-90b-text-preview", groq_api_key='your groq api key', temperature=0.0)
+model = ChatGroq(model="llama-3.2-90b-text-preview", groq_api_key='your api key', temperature=0.35)
 
 # Define the system prompt template for concise translation to Arabic
 sys_template = "Translate the following sentence into Arabic concisely, ensuring no extra words."
@@ -80,7 +80,7 @@ async def translate_instructions(instructions):
                 # Get translated instruction
                 translated_instruction = chain.invoke({"input": instruction})
                 cleaned_translated = clean_translation(translated_instruction)
-                translations.append(cleaned_translated)
+                translations.append(cleaned_translated) 
             except Exception as e:
                 print(f"Error translating instruction '{instruction}': {e}")
 
@@ -108,10 +108,6 @@ async def translate_data():
                 with open(output_file_path, 'w', encoding='utf-8') as outfile:
                     outfile.write('[\n')  # Start the JSON array
 
-                    # Track indentation level
-                    indent_level = 1
-                    base_indent = "  "  # Indent by 2 spaces
-
                     for idx, item in enumerate(data):
                         # Check if the item contains "instruction" or "instructions" key
                         instructions_key = "instruction" if "instruction" in item else "instructions" if "instructions" in item else None
@@ -121,23 +117,9 @@ async def translate_data():
                             translated = await translate_instructions(instructions)
                             item[instructions_key] = translated  # Replace with translated content
                         
-                        # Convert item to JSON with initial 2-space indentation
-                        json_item = json.dumps(item, ensure_ascii=False, indent=0)
-                        json_lines = json_item.splitlines()  # Split JSON string into lines for custom indentation
+                        # Write the modified item to the output file with 2-space indentation
+                        json.dump(item, outfile, ensure_ascii=False, indent=2)
 
-                        for line in json_lines:
-                            # Adjust indentation level for each line based on `{`, `}`, `[`, `]`
-                            if line.strip().startswith("}") or line.strip().startswith("]"):
-                                indent_level -= 1
-
-                            # Apply the current indentation level
-                            outfile.write(f"{base_indent * indent_level}{line}\n")
-
-                            # Increase indentation after `{` or `[`
-                            if line.strip().endswith("{") or line.strip().endswith("["):
-                                indent_level += 1
-
-                        
                         # Add comma after each item except the last one
                         if idx < len(data) - 1:
                             outfile.write(',\n')
@@ -145,6 +127,22 @@ async def translate_data():
                             outfile.write('\n')
 
                     outfile.write(']')  # Close the JSON array
+
+
+                # Now, read the contents and shift indentation 2 units to the right
+                with open(output_file_path, 'r', encoding='utf-8') as outfile:
+                    content = outfile.read()
+
+                # Split the content into lines
+                lines = content.split('\n')
+
+                # Add 2 spaces to the beginning of each line except the first and last
+                shifted_content = '\n'.join([lines[0]] + ['  ' + line for line in lines[1:-1]] + [lines[-1]])
+
+                # Write the shifted content back to the file
+                with open(output_file_path, 'w', encoding='utf-8') as outfile:
+                    outfile.write(shifted_content)
+
 
         # Return a success message
         return {"message": "Translations completed and saved with original file structure intact."}
