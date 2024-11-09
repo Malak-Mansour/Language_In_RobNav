@@ -108,6 +108,10 @@ async def translate_data():
                 with open(output_file_path, 'w', encoding='utf-8') as outfile:
                     outfile.write('[\n')  # Start the JSON array
 
+                    # Track indentation level
+                    indent_level = 1
+                    base_indent = "  "  # Indent by 2 spaces
+
                     for idx, item in enumerate(data):
                         # Check if the item contains "instruction" or "instructions" key
                         instructions_key = "instruction" if "instruction" in item else "instructions" if "instructions" in item else None
@@ -117,8 +121,22 @@ async def translate_data():
                             translated = await translate_instructions(instructions)
                             item[instructions_key] = translated  # Replace with translated content
                         
-                        # Write the modified item to the output file
-                        json.dump(item, outfile, ensure_ascii=False, indent=4)
+                        # Convert item to JSON with initial 2-space indentation
+                        json_item = json.dumps(item, ensure_ascii=False, indent=0)
+                        json_lines = json_item.splitlines()  # Split JSON string into lines for custom indentation
+
+                        for line in json_lines:
+                            # Adjust indentation level for each line based on `{`, `}`, `[`, `]`
+                            if line.strip().startswith("}") or line.strip().startswith("]"):
+                                indent_level -= 1
+
+                            # Apply the current indentation level
+                            outfile.write(f"{base_indent * indent_level}{line}\n")
+
+                            # Increase indentation after `{` or `[`
+                            if line.strip().endswith("{") or line.strip().endswith("["):
+                                indent_level += 1
+
                         
                         # Add comma after each item except the last one
                         if idx < len(data) - 1:
