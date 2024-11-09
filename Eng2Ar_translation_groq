@@ -80,7 +80,7 @@ async def translate_instructions(instructions):
                 # Get translated instruction
                 translated_instruction = chain.invoke({"input": instruction})
                 cleaned_translated = clean_translation(translated_instruction)
-                translations.append([cleaned_translated])  # Wrap single string in list
+                translations.append(cleaned_translated)
             except Exception as e:
                 print(f"Error translating instruction '{instruction}': {e}")
 
