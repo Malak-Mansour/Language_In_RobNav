@@ -15,7 +15,7 @@ import re
 load_dotenv()
 
 # Initialize the Groq model with the specified parameters
-model = ChatGroq(model="llama-3.2-90b-text-preview", groq_api_key='your api key', temperature=0.35)
+model = ChatGroq(model="llama-3.2-90b-text-preview", groq_api_key='your_api_key', temperature=0.35)
 
 # Define the system prompt template for concise translation to Arabic
 sys_template = "Translate the following sentence into Arabic concisely, ensuring no extra words."
