@@ -35,18 +35,47 @@ def clean_translation(text):
     arabic_text = re.sub(r'[^\u0600-\u06FF\s.,/؛؟!،]', '', text).strip()
     return arabic_text.strip()
 
-# Function to translate individual text lines using the model
+# Function to map English numbers to Arabic numbers
+def english_to_arabic_numbers(english_number):
+    # Arabic numerals mapping
+    arabic_numerals = {
+        '0': '٠', '1': '١', '2': '٢', '3': '٣', '4': '٤',
+        '5': '٥', '6': '٦', '7': '٧', '8': '٨', '9': '٩'
+    }
+    return ''.join(arabic_numerals.get(digit, digit) for digit in english_number)
+
+# Function to preprocess and split the object name and number
+def preprocess_text(text):
+    # Split by number at the end (e.g., "sofa_chair _1" becomes "sofa_chair" and "1")
+    match = re.match(r"([a-zA-Z\s_]+)_(\d+)$", text)
+    if match:
+        object_name = match.group(1)  # 'sofa_chair'
+        number = match.group(2)  # '1'
+        return object_name.strip(), number
+    else:
+        return text, None  # No number found, return the text as is
+
+# Modify the translate_text function to handle Arabic numbers
 async def translate_text(text):
-    # Set up the prompt template for translation
+    # Preprocess to handle numbers separately
+    object_name, number = preprocess_text(text)
+    
+    # Translate the object name part
     prompt_template = ChatPromptTemplate.from_messages([
         ("system", sys_template),
-        ("user", text)
+        ("user", object_name)
     ])
-    
-    # Chain the prompt through the model and parse the output
     chain = prompt_template | model | parser
-    translated_text = chain.invoke({"input": text})
+    translated_text = chain.invoke({"input": object_name})
+    
+    # If there is a number, convert it to Arabic and append it
+    if number:
+        arabic_number = english_to_arabic_numbers(number)
+        translated_text += " " + arabic_number
+    
     return clean_translation(translated_text)
+
+
 
 # Function to translate object names in the JSON data
 async def translate_object_names(data):
@@ -93,7 +122,10 @@ async def translate_data_in_file(file_path, output_file_path):
 
                 for idx, item in enumerate(items):
                     if not item:  # Check if the item is empty
-                        outfile.write('        {},\n')  # Write empty object in one line
+                        if idx < len(items) - 1:  # Only add a comma if it's not the last item
+                            outfile.write('        {},\n')
+                        else: outfile.write('        {}\n') 
+
                         continue
 
                     outfile.write('        {\n')  # Additional 4 spaces for opening each item
@@ -129,7 +161,7 @@ async def translate_data_in_file(file_path, output_file_path):
 
             processed_keys += 1
 
-        outfile.write('}\n')  # Close the JSON object in the file
+        outfile.write('}')  # Close the JSON object in the file
 
 
 # FastAPI endpoint to translate JSON files
@@ -141,7 +173,8 @@ async def translate_files():
         os.makedirs(output_dir, exist_ok=True)
 
         # Process each file in the specified directory
-        for file_path in glob.glob("datasets/R2R/objects_list/*.json"):
+        for file_path in glob.glob("datasets/R2R/objects_list/*.json"):         
+
             output_file_path = os.path.join(output_dir, os.path.basename(file_path).replace('.json', '.translated.json'))
             await translate_data_in_file(file_path, output_file_path)
         
