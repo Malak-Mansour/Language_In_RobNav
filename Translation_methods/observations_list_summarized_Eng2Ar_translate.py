@@ -16,32 +16,8 @@ import shutil
 # Load environment variables from .env file
 load_dotenv()
 
-
 # Initialize the Groq model with the specified parameters
-# salma sat
-model = ChatGroq(model="llama-3.2-90b-text-preview", groq_api_key='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', temperature=0.35)
-
-# salma gmail
-# model = ChatGroq(model="llama-3.2-90b-text-preview", groq_api_key='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', temperature=0.35) #salma nyu
-
-# salma nyu
-# model = ChatGroq(model="llama-3.2-90b-text-preview", groq_api_key='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', temperature=0.35) 
-
-
-#mbzuai
-# model = ChatGroq(model="llama-3.2-90b-text-preview", groq_api_key='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', temperature=0.35) 
-# model = ChatGroq(model="llama-3.2-90b-text-preview", groq_api_key='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', temperature=0.35) 
-
-#nyu
-# model = ChatGroq(model = "llama-3.1-70b-versatile", groq_api_key = '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', temperature=0.35)
-# model = ChatGroq(model="llama-3.2-90b-text-preview", groq_api_key='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', temperature=0.35) 
-
-# gmail
-# model = ChatGroq(model="llama-3.2-90b-text-preview", groq_api_key='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', temperature=0.35)
-# model = ChatGroq(model="llama-3.2-90b-text-preview", groq_api_key='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', temperature=0.35)
-# model = ChatGroq(model="llama-3.2-90b-text-preview", groq_api_key='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', temperature=0.35) 
-# model = ChatGroq(model="llama-3.2-90b-text-preview", groq_api_key='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', temperature=0.35)
-
+model = ChatGroq(model="llama-3.2-90b-text-preview", groq_api_key='your_api_key_here', temperature=0.35)
 
 # Define the system prompt template for concise translation to Arabic
 sys_template = "Translate the following sentence into Arabic concisely, ensuring no extra words."
@@ -114,4 +90,4 @@ async def translate_files():
 # Run the FastAPI app if this script is executed directly
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="localhost", port=1000)
+    uvicorn.run(app, host="localhost", port=8000)
