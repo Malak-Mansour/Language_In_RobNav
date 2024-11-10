@@ -116,7 +116,7 @@ async def translate_data_in_file(file_path, output_file_path):
 async def translate_files():
     try:
         # Create directory for translated files if it does not exist
-        output_dir = "translated_annotations"
+        output_dir = "translated/observations"
         os.makedirs(output_dir, exist_ok=True)
 
         # Iterate over JSON files in the specified directory and translate each one
