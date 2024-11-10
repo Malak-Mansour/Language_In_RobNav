@@ -92,7 +92,7 @@ async def translate_instructions(instructions):
 async def translate_data():
     try:
         # Create output directory for translated files
-        output_dir = "translated/annotations"
+        output_dir = "datasets/Arabic_translated_R2R/annotations"
         os.makedirs(output_dir, exist_ok=True)
 
         # Process each JSON file in the specified directory
