@@ -7,7 +7,8 @@ def parse_args():
 
     # datasets
     parser.add_argument('--root_dir', type=str, default='../datasets')
-    parser.add_argument('--dataset', type=str, default='r2r', choices=['r2r', 'r4r'])
+    parser.add_argument('--translated', type=bool, default=False)
+    parser.add_argument('--dataset', type=str, default='r2r', choices=['r2r', 'r4r','r2r_t'])
     parser.add_argument('--output_dir', type=str, default='../datasets/R2R/exprs/gpt-3.5-turbo', help='experiment id')
     # parser.add_argument('--output_dir', type=str, default='../datasets/R2R/exprs/LlaMA-2-13b-test', help='experiment id')
     parser.add_argument('--seed', type=int, default=0)
@@ -57,23 +58,42 @@ def postprocess_args(args):
     ROOTDIR = args.root_dir
 
     # Setup input paths
-    args.obs_dir = os.path.join(ROOTDIR, 'R2R', 'observations_list_summarized')
-    args.obs_summary_dir = os.path.join(ROOTDIR, 'R2R', 'observations_summarized')
-    args.obj_dir = os.path.join(ROOTDIR, 'R2R', 'objects_list')
+    if not args.translated:
+        args.obs_dir = os.path.join(ROOTDIR, 'R2R', 'observations_list_summarized')
+        args.obs_summary_dir = os.path.join(ROOTDIR, 'R2R', 'observations_summarized')
+        args.obj_dir = os.path.join(ROOTDIR, 'R2R', 'objects_list')
 
-    args.connectivity_dir = os.path.join(ROOTDIR, 'R2R', 'connectivity')
-    args.scan_data_dir = os.path.join(ROOTDIR, 'Matterport3D', 'v1_unzip_scans')
+        args.connectivity_dir = os.path.join(ROOTDIR, 'R2R', 'connectivity')
+        args.scan_data_dir = os.path.join(ROOTDIR, 'Matterport3D', 'v1_unzip_scans')
 
-    args.anno_dir = os.path.join(ROOTDIR, 'R2R', 'annotations')
-    args.navigable_dir = os.path.join(ROOTDIR, 'R2R', 'navigable')
+        args.anno_dir = os.path.join(ROOTDIR, 'R2R', 'annotations')
+        args.navigable_dir = os.path.join(ROOTDIR, 'R2R', 'navigable')
 
-    # Build paths
-    args.log_dir = os.path.join(args.output_dir, 'logs')
-    args.pred_dir = os.path.join(args.output_dir, 'preds')
+        # Build paths
+        args.log_dir = os.path.join(args.output_dir, 'logs')
+        args.pred_dir = os.path.join(args.output_dir, 'preds')
 
-    os.makedirs(args.output_dir, exist_ok=True)
-    os.makedirs(args.log_dir, exist_ok=True)
-    os.makedirs(args.pred_dir, exist_ok=True)
+        os.makedirs(args.output_dir, exist_ok=True)
+        os.makedirs(args.log_dir, exist_ok=True)
+        os.makedirs(args.pred_dir, exist_ok=True)
+    else:
+        args.obs_dir = os.path.join(ROOTDIR, 'R2R_T', 'observations_list_summarized')
+        args.obs_summary_dir = os.path.join(ROOTDIR, 'R2R_T', 'observations_summarized')
+        args.obj_dir = os.path.join(ROOTDIR, 'R2R_T', 'objects_list')
+
+        args.connectivity_dir = os.path.join(ROOTDIR, 'R2R_T', 'connectivity')
+        args.scan_data_dir = os.path.join(ROOTDIR, 'Matterport3D', 'v1_unzip_scans')
+
+        args.anno_dir = os.path.join(ROOTDIR, 'R2R_T', 'annotations')
+        args.navigable_dir = os.path.join(ROOTDIR, 'R2R_T', 'navigable')
+
+        # Build paths
+        args.log_dir = os.path.join(args.output_dir, 'logs')
+        args.pred_dir = os.path.join(args.output_dir, 'preds')
+
+        os.makedirs(args.output_dir, exist_ok=True)
+        os.makedirs(args.log_dir, exist_ok=True)
+        os.makedirs(args.pred_dir, exist_ok=True)
 
     return args
 

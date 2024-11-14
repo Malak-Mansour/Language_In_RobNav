@@ -96,7 +96,6 @@ def main():
     args = parse_args()
 
     val_envs = build_dataset(args)
-
     if args.valid_file is not None:
         valid_from_file(args, val_envs)
     else:

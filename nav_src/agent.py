@@ -13,7 +13,8 @@ from agent_base import BaseAgent
 from langchain import HuggingFacePipeline
 from langchain.agents.agent import AgentExecutor, AgentAction, AgentOutputParser
 from langchain.agents.mrkl.base import ZeroShotAgent
-from langchain.agents.tools import Tool
+# from langchain.agents.tools import Tool
+from langchain.agents import Tool
 from langchain.chains import LLMChain
 from langchain.llms.openai import OpenAI
 from langchain.prompts import PromptTemplate
@@ -25,9 +26,13 @@ from langchain.schema import (
     OutputParserException
 )
 from langchain.base_language import BaseLanguageModel
+import time
 
 from langchain.agents.mrkl.prompt import FORMAT_INSTRUCTIONS
-from prompt.planner_prompt import (
+
+translated=False
+if not translated:
+    from prompt.planner_prompt import (
     ACTION_PROMPT,
     HISTORY_PROMPT,
     PLANNER_PROMPT,
@@ -39,7 +44,23 @@ from prompt.planner_prompt import (
     VLN_ORCHESTRATOR_PROMPT,
     VLN_GPT4_PROMPT,
     VLN_GPT35_PROMPT,
-)
+    JAIS_PROMPT
+    )
+else:
+    from prompt.planner_prompt_t import (
+    ACTION_PROMPT,
+    HISTORY_PROMPT,
+    PLANNER_PROMPT,
+    BACK_TRACE_PROMPT,
+    MAKE_ACTION_TOOL_NAME,
+    MAKE_ACTION_TOOL_DESCRIPTION,
+    BACK_TRACE_TOOL_NAME,
+    BACK_TRACE_TOOL_DESCRIPTION,
+    VLN_ORCHESTRATOR_PROMPT,
+    VLN_GPT4_PROMPT,
+    VLN_GPT35_PROMPT,
+    )
+
 
 FINAL_ANSWER_ACTION = "Final Answer:"
 EXCEPTION_TOOL_NAME = "_Exception"
@@ -156,7 +177,6 @@ class NavAgent(BaseAgent):
         """
         super().__init__(env)
         self.config = config
-
         if config.llm_model_name.split('-')[0] == 'gpt':
             self.llm = OpenAI(
                 temperature=config.temperature,
@@ -174,6 +194,82 @@ class NavAgent(BaseAgent):
                 max_gen_len = 500,
                 max_batch_size = 1,
             )
+
+        elif config.llm_model_name == 'custom-gpt':
+            from langchain_community.chat_models.azure_openai import AzureChatOpenAI
+            BASE_URL = "https://ai-baheytharwat4839ai592784027451.openai.azure.com/"
+            API_KEY = "AFYuHGT8vM5hetqMaZwtszWIFtnuoHRfUVNWoV8ldNmJ6kLxIUPdJQQJ99AKACHYHv6XJ3w3AAAAACOGSKFX"
+            DEPLOYMENT_NAME = "gpt-4o-mini"
+            API_VERSION = "2024-02-15-preview"
+
+            self.llm = AzureChatOpenAI(
+                openai_api_base=BASE_URL,
+                openai_api_version=API_VERSION,
+                deployment_name=DEPLOYMENT_NAME,
+                openai_api_key=API_KEY,
+                openai_api_type="azure",
+                temperature=0,
+            )
+            # from LLMs.Langchain_gpt import Custom_GPT
+            # BASE_URL = "https://ai-baheytharwat4839ai592784027451.openai.azure.com"
+            # API_KEY = "AFYuHGT8vM5hetqMaZwtszWIFtnuoHRfUVNWoV8ldNmJ6kLxIUPdJQQJ99AKACHYHv6XJ3w3AAAAACOGSKFX"
+            # DEPLOYMENT_NAME = "gpt-4o-mini"
+            # API_VERSION = "2024-02-15-preview"
+            # self.llm = Custom_GPT.from_model_id(
+            #     BASE_URL=BASE_URL,
+            #     API_KEY=API_KEY,
+            #     DEPLOYMENT_NAME=DEPLOYMENT_NAME,
+            #     API_VERSION=API_VERSION,
+            #     temperature=config.temperature,
+            #     max_seq_len = 8000,
+            #     max_gen_len = 500,
+            #     max_batch_size = 1,
+            # )
+
+        elif config.llm_model_name == 'custom-phi':
+            # from langchain_community.llms.azureml_endpoint import AzureMLEndpointApiType, AzureMLOnlineEndpoint
+            # from LLMs.Langchain_jais import CustomOpenAIContentFormatter
+
+            # ENDPOINT_URL = "https://jais-30b-chat-gftep.eastus2.models.ai.azure.com/v1/chat/completions"
+            # API_KEY = "1jtb7qaQZL3NIcgYrH7UyKCIXrPbb4Xv"
+
+            # self.llm = AzureMLOnlineEndpoint(
+            #     endpoint_url=ENDPOINT_URL,
+            #     endpoint_api_type=AzureMLEndpointApiType.serverless,
+            #     endpoint_api_key=API_KEY,
+            #     content_formatter=CustomOpenAIContentFormatter(),
+            #     model_kwargs={"temperature": 0.8},
+            # )
+
+            from langchain_community.llms.azureml_endpoint import AzureMLEndpointApiType
+            from LLMs.Langchain_jais import CustomOpenAIChatContentFormatter, AzureMLChatOnlineEndpoint
+
+            ENDPOINT_URL = "https://Phi-3-small-128k-instruct-zcbmw.eastus2.models.ai.azure.com/v1/chat/completions"
+            API_KEY = "CESJ9MWoFdSAB43T8v1NdzpklFQLLuoN"
+
+            self.llm = AzureMLChatOnlineEndpoint(
+                endpoint_url=ENDPOINT_URL,
+                endpoint_api_type=AzureMLEndpointApiType.serverless,
+                endpoint_api_key=API_KEY,
+                content_formatter=CustomOpenAIChatContentFormatter(),
+
+                model_kwargs={"temperature": 0.8},
+            )
+
+            
+            # ENDPOINT_URL = "https://jais-30b-chat-dgqtj.eastus2.models.ai.azure.com/v1/chat/completions"
+            # API_KEY = "aMihS2FYjiJWthzcL2ONuyOfJr1bnAmJ"
+            # self.llm = Custom_Jais.from_model_id(
+            #     ENDPOINT_URL=ENDPOINT_URL,
+            #     API_KEY=API_KEY,
+            #     temperature=config.temperature,
+            #     max_seq_len = 8000,
+            #     max_gen_len = 500,
+            #     max_batch_size = 1,
+            # )
+
+
+
         # elif config.llm_model_name == 'Vicuna-v1.5-13b':
         #     from LLMs.Langchain_Vicuna import Custom_Vicuna
         #     self.llm = Custom_Vicuna.from_config(
@@ -364,6 +460,7 @@ class NavAgent(BaseAgent):
         def _make_action(*args, **kwargs) -> str:
             '''Make single step action in MatterSim.'''
             # Get current observation
+            time.sleep(40)
             cur_obs = self.env._get_obs()[0]
 
             # Get current feature
@@ -564,7 +661,8 @@ class NavAgent(BaseAgent):
         rather than a top-level planner
         that invokes a controller with its plan. This is to keep the planner simple.
         """
-
+        print('loop has started')
+        time.sleep(40)
         self.action_maker = self._create_make_action_tool(self.llm)
         self.back_tracer = self._create_back_trace_tool(self.llm)
 
@@ -587,7 +685,7 @@ class NavAgent(BaseAgent):
         elif self.config.use_single_action:
             tools = [self.action_maker]
             prompt = PromptTemplate(
-                template=VLN_GPT4_PROMPT if self.config.llm_model_name == 'gpt-4' else VLN_GPT35_PROMPT,
+                template=VLN_GPT4_PROMPT if self.config.llm_model_name == 'custom-gpt'else JAIS_PROMPT if self.config.llm_model_name == 'custom-jais' else VLN_GPT35_PROMPT,
                 input_variables=["action_plan", "init_observation", "agent_scratchpad"],
                 partial_variables={
                     "tool_names": ", ".join([tool.name for tool in tools]),
