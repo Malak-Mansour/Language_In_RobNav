@@ -16,7 +16,7 @@ If WSL, run the following block first:
 <button onclick="copyToClipboard(this.previousElementSibling.innerText)"></button>
 </pre>
 
-
+Run the following to setup the environment and install the requirements:
 <pre>
 <code>
   conda create --name NavGPT python=3.9
@@ -26,6 +26,11 @@ If WSL, run the following block first:
 <button onclick="copyToClipboard(this.previousElementSibling.innerText)"></button>
 </pre>
 
+Then paste the following and adjust the variables depending on 
+- {model_name}: which LLM you are running (the list is in _agent.py_)
+- {output_folder_of_model}: what you want to call the folder that the output results are saved into
+- {number_of_trajectories}: number of trajectories that the robot will take from the map
+- {True_or_False}: True if you want to use the Arabic translated dataset, False otherwise
 
 <pre>
 <code>
@@ -40,12 +45,12 @@ If WSL, run the following block first:
 
 
 
-Example
+Here is an example of an experiment with Llama 3.1 8B model, Arabic dataset, and using the shortened version of the annotations directory that contains the translated scene for inference:
 <pre>
 <code>
-  cd nav_src
-  python NavGPT.py --llm_model_name custom-mistral \
-    --output_dir ../datasets/R2R/exprs/mistral_ar \
+ cd nav_src
+  python NavGPT.py --llm_model_name custom-llama_3.1_8B \
+    --output_dir ../datasets/R2R/exprs/llama_3.1_8B_ar \
     --val_env_name R2R_val_unseen_instr_100 \
     --iters 100 --translated True
 </code>
@@ -58,5 +63,5 @@ Example
 | Experiment Name | LLM                      | Dataset             |
 |-----------------|--------------------------|---------------------|
 | custom-gpt      | gpt-4o-mini              | English and Arabic  |
-| custom-llama    | Llama-3-1-70B-Instruct   | English and Arabic  |
+| custom-llama_3.1_8B    | Llama-3-1-8B-Instruct   | English and Arabic  |
 
