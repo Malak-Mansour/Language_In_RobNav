@@ -14,5 +14,14 @@ https://github.com/GengzeZhou/NavGPT/tree/master
   python NavGPT.py --llm_model_name {model_name} \
     --output_dir ../datasets/R2R/exprs/{output_folder_of_model} \
     --val_env_name R2R_val_unseen_instr \
-    --iters {number_of_trajectories}
+    --iters {number_of_trajectories} --translated {True_or_False}
+</pre>
+
+Example
+<pre>
+  cd nav_src
+  python NavGPT.py --llm_model_name custom-mistral \
+    --output_dir ../datasets/R2R/exprs/mistral_ar \
+    --val_env_name R2R_val_unseen_instr_100 \
+    --iters 100 --translated True
 </pre>
