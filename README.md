@@ -28,10 +28,10 @@ conda --version
 </pre>
 
 Example
-<pre>
+##
+<tab><tab>code/
   cd nav_src
   python NavGPT.py --llm_model_name custom-mistral \
     --output_dir ../datasets/R2R/exprs/mistral_ar \
     --val_env_name R2R_val_unseen_instr_100 \
     --iters 100 --translated True
-</pre>
