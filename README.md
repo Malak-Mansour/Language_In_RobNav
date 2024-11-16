@@ -3,6 +3,8 @@ AI701 Project
 
 https://github.com/GengzeZhou/NavGPT/tree/master
 
+Run the following commands on Linux terminal or Ubuntu (WSL) for Windows:
+
 <pre>
   conda create --name NavGPT python=3.9
   conda activate NavGPT
