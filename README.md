@@ -1,8 +1,12 @@
-# Language_In_RobNav
-AI701 Project
+# Does Language Affect Reasoning Tasks in Robotic Navigation?
 
-https://github.com/GengzeZhou/NavGPT/tree/master
+## Introduction
+This is the repository of our AI701 course project at MBZUAI.
 
+We are inferencing different LLMs with the Arabic and English datasets (in this repository) to see if language affects the reasoning capabilities of the LLMs by comparing the NavGPT (https://github.com/GengzeZhou/NavGPT/tree/master) performance results.
+
+
+## Setup instructions
 Run the following commands on Linux terminal or Ubuntu (WSL) for Windows:
 
 If WSL, run the following block first:
