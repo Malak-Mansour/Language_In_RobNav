@@ -30,7 +30,7 @@ Starting below, you should strictly follow this format:
 History: the history of previous steps you have taken
 Observation: the current observation of the environment
 Navigable viewpoints: the navigable viewpoints for the next step
-Thought: your thought on the next step
+Thought: your thought on the next step. If the dataset is in Arabic, output the thoughts in Arabic.
 Final Answer: 'viepointID'
 ----
 
@@ -72,7 +72,7 @@ Starting below, you should follow this format:
 Action plan: the action plan describing the whole trajectory
 History: the history of previous steps you have taken
 Observation: the observations of each viewpoint along the trajectory
-Thought: your thought about the next step
+Thought: your thought about the next step.  If the dataset is in Arabic, output the thoughts in Arabic.
 Final Answer: 'viewpointID'
 ----
 
@@ -103,7 +103,7 @@ Starting below, you should follow this format:
 
 Instruction: the instruction describing the whole trajectory
 Initial Observation: the initial observation of the environment
-Thought: I should start navigation according to the instruction
+Thought: I should start navigation according to the instruction.  If the dataset is in Arabic, output the thoughts in Arabic.
 Action: action_maker
 Action Input: ""
 Observation: the result of the action
@@ -119,7 +119,7 @@ Begin!
 
 Instruction: {action_plan}
 Initial Observation: {init_observation}
-Thought: I should start navigation according to the instruction
+Thought: I should start navigation according to the instruction.  If the dataset is in Arabic, output the thoughts in Arabic.
 Action: action_maker
 Action Input: ""
 Observation: {observation}
@@ -177,7 +177,7 @@ If no you should continue:
     (2) Consider whether you are on the right track or not.
     If yes, use the action_maker tool to move to adjacent viewpoint shown in Navigable Viewpoints.
     If not, use the back_tracer tool to move to any previous viewpoint shown in History.
-You should always use the action_maker at the begining of navigation. Show your reasoning in the Thought section.
+You should always use the action_maker at the begining of navigation. Show your reasoning in the Thought section. If the dataset is in Arabic, output the thoughts in Arabic.
 
 Here are the descriptions of these tools: {tool_descriptions}
 
@@ -217,7 +217,7 @@ If not you should continue:
     (2) Consider where you are on the trajectory and what should be the next viewpoint to navigate according to the instruction.
     use the action_maker tool, input the next navigable viewpoint ID to move to that location.
 
-Show your reasoning in the Thought section.
+Show your reasoning in the Thought section. If the dataset is in Arabic, output the thoughts in Arabic.
 
 Here are the descriptions of these tools:
 {tool_descriptions}
@@ -253,7 +253,7 @@ Explore the environment while avoiding revisiting viewpoints by comparing curren
 At each step, determine if you've reached the destination.
 If yes, stop and output 'Final Answer: Finished!'.
 If not, continue by considering your location and the next viewpoint based on the instruction, using the action_maker tool.
-Show your reasoning in the Thought section.
+Show your reasoning in the Thought section. If the dataset is in Arabic, output the thoughts in Arabic.
 
 Follow the given format and use provided tools.
 {tool_descriptions}
@@ -299,7 +299,7 @@ Your task:
 - For `Action Input`, input only the `viewpoint ID` derived from observation data, aligning with the instruction.
 - At each step, determine if you've reached the destination. If yes, stop and output `Final Answer: Finished!`.
 - If not, continue by considering your location and the next viewpoint based on the instruction, using the action_maker tool.
-Show your reasoning in the Thought section.
+Show your reasoning in the Thought section. If the dataset is in Arabic, output the thoughts in Arabic.
 
 
 Follow the given format and use provided tools.
