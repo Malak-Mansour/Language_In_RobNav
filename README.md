@@ -13,7 +13,7 @@ If WSL, run the following block first:
   source ~/.bashrc
   conda --version
 </code>
-<button onclick="copyToClipboard(this.previousElementSibling.innerText)">Copy</button>
+<button onclick="copyToClipboard(this.previousElementSibling.innerText)"></button>
 </pre>
 
 
@@ -23,7 +23,7 @@ If WSL, run the following block first:
   conda activate NavGPT
   pip install -r requirements.txt
 </code>
-<button onclick="copyToClipboard(this.previousElementSibling.innerText)">Copy</button>
+<button onclick="copyToClipboard(this.previousElementSibling.innerText)"></button>
 </pre>
 
 
@@ -35,7 +35,7 @@ If WSL, run the following block first:
     --val_env_name R2R_val_unseen_instr \
     --iters {number_of_trajectories} --translated {True_or_False}
 </code>
-<button onclick="copyToClipboard(this.previousElementSibling.innerText)">Copy</button>
+<button onclick="copyToClipboard(this.previousElementSibling.innerText)"></button>
 </pre>
 
 
@@ -49,5 +49,5 @@ Example
     --val_env_name R2R_val_unseen_instr_100 \
     --iters 100 --translated True
 </code>
-<button onclick="copyToClipboard(this.previousElementSibling.innerText)">Copy</button>
+<button onclick="copyToClipboard(this.previousElementSibling.innerText)"></button>
 </pre>
