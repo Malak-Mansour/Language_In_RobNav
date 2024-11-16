@@ -69,5 +69,5 @@ For our paper, we ran the following experiments to perform consistent comparison
 |-----------------|--------------------------|---------------------|
 | custom-gpt      | GPT-4o-mini              | English and Arabic  |
 | custom-llama_3.1_8B    | Llama-3-1-8B-Instruct   | English and Arabic  |
-| custom-phi    | Phi-3-small-128k-instruct   | English and Arabic  |
+| custom-phi    | Phi medium 14B Instruct (4K or 128K ?)  | English and Arabic  |
 
