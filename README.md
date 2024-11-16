@@ -45,7 +45,7 @@ Then paste the following and adjust the variables depending on
 
 
 
-Here is an example of an experiment with Llama 3.1 8B model, Arabic dataset, and using the shortened version of the annotations directory that contains the translated scene for inference:
+Here is an example of an experiment with Llama 3.1 8B model, Arabic dataset, and using _R2R_val_unseen_instr_100_: the shortened version of the annotations directory that contains the translated scene for inference:
 <pre>
 <code>
  cd nav_src
@@ -59,9 +59,11 @@ Here is an example of an experiment with Llama 3.1 8B model, Arabic dataset, and
 
 
 ## Experiments
+For our paper, we ran the following experiments to perform consistent comparisons
 
 | Experiment Name | LLM                      | Dataset             |
 |-----------------|--------------------------|---------------------|
 | custom-gpt      | gpt-4o-mini              | English and Arabic  |
 | custom-llama_3.1_8B    | Llama-3-1-8B-Instruct   | English and Arabic  |
+| custom-phi    | phi   | English and Arabic  |
 
