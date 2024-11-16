@@ -5,6 +5,14 @@ https://github.com/GengzeZhou/NavGPT/tree/master
 
 Run the following commands on Linux terminal or Ubuntu (WSL) for Windows:
 
+If WSL, run the following block first:
+<pre>
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh
+source ~/.bashrc
+conda --version
+</pre>
+
 <pre>
   conda create --name NavGPT python=3.9
   conda activate NavGPT
