@@ -11,8 +11,8 @@ https://github.com/GengzeZhou/NavGPT/tree/master
 
 <pre>
   cd nav_src
-  python NavGPT.py --llm_model_name <model_name> \
-    --output_dir ../datasets/R2R/exprs/<output folder of model> \
+  python NavGPT.py --llm_model_name {model_name} \
+    --output_dir ../datasets/R2R/exprs/{output_folder_of_model} \
     --val_env_name R2R_val_unseen_instr \
-    --iters <number of trajectories>
+    --iters {number_of_trajectories}
 </pre>
