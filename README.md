@@ -65,7 +65,7 @@ Here is an example of an experiment with Llama 3.1 8B model, Arabic dataset, and
 ## Experiments
 For our paper, we ran the following experiments to perform consistent comparisons
 
-| Experiment Name | LLM                      | Dataset             |
+| Experiment Name | [LLM]([url](https://ai.azure.com/build/deployments/model?wsid=/subscriptions/e5778ef5-2c36-4854-881c-68101270360e/resourceGroups/rg-MalakMansour-4720_ai/providers/Microsoft.MachineLearningServices/workspaces/malakmansour-3941&tid=c93272d3-1b07-4b3d-a3b6-19b34a973915))                      | Dataset             |
 |-----------------|--------------------------|---------------------|
 | custom-gpt      | GPT-4o-mini              | English and Arabic  |
 | custom-llama_3.1_8B    | Llama-3-1-8B-Instruct   | English and Arabic  |
