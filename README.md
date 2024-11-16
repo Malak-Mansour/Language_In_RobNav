@@ -51,3 +51,9 @@ Example
 </code>
 <button onclick="copyToClipboard(this.previousElementSibling.innerText)"></button>
 </pre>
+
+
+
+Experiments:
+custom-gpt: , LLM:gpt-4o-mini , Dataset: English and Arabic
+custom-llama , LLM:Llama-3-1-70B-Instruct, Dataset: English and Arabic
