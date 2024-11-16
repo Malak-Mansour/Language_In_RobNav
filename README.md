@@ -53,7 +53,10 @@ Example
 </pre>
 
 
+## Experiments
 
-Experiments:
-custom-gpt: , LLM:gpt-4o-mini , Dataset: English and Arabic
-custom-llama , LLM:Llama-3-1-70B-Instruct, Dataset: English and Arabic
+| Experiment Name | LLM                      | Dataset             |
+|-----------------|--------------------------|---------------------|
+| custom-gpt      | gpt-4o-mini              | English and Arabic  |
+| custom-llama    | Llama-3-1-70B-Instruct   | English and Arabic  |
+
