@@ -34,7 +34,7 @@ Then paste the following and adjust the variables depending on
 - {model_name}: which LLM you are running (the list is in _agent.py_)
 - {output_folder_of_model}: what you want to call the folder that the output results are saved into
 - {number_of_trajectories}: number of trajectories that the robot will take from the map
-- {True_or_False}: True if you want to use the Arabic translated dataset, False otherwise
+- {--translated True}: write --translated True if you want to use the Arabic translated dataset, and remove it if you will be using the regular english dataset
 
 <pre>
 <code>
@@ -42,7 +42,7 @@ Then paste the following and adjust the variables depending on
   python NavGPT.py --llm_model_name {model_name} \
     --output_dir ../datasets/R2R/exprs/{output_folder_of_model} \
     --val_env_name R2R_val_unseen_instr \
-    --iters {number_of_trajectories} --translated {True_or_False}
+    --iters {number_of_trajectories} {--translated True}
 </code>
 <button onclick="copyToClipboard(this.previousElementSibling.innerText)"></button>
 </pre>
