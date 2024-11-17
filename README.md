@@ -12,8 +12,8 @@ Run the following commands on Linux terminal or Ubuntu (WSL) for Windows:
 If WSL, run the following block first:
 <pre>
 <code>
-  wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-  bash Miniconda3-latest-Linux-x86_64.sh
+  wget https://repo.anaconda.com/archive/Anaconda3-2024.10-1-Linux-x86_64.sh
+  bash Anaconda3-2024.10-1-Linux-x86_64.sh
   source ~/.bashrc
   conda --version
 </code>
