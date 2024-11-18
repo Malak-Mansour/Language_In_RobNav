@@ -226,7 +226,7 @@ class NavAgent(BaseAgent):
             #     max_batch_size = 1,
             # )
 
-        elif config.llm_model_name == 'custom-phi':
+        elif config.llm_model_name == 'custom-phi_small':
             # from langchain_community.llms.azureml_endpoint import AzureMLEndpointApiType, AzureMLOnlineEndpoint
             # from LLMs.Langchain_jais import CustomOpenAIContentFormatter
 
@@ -342,7 +342,24 @@ class NavAgent(BaseAgent):
 
             ENDPOINT_URL = "https://Meta-Llama-3-1-8B-Instruct-tsoyk.eastus2.models.ai.azure.com/v1/chat/completions"
             API_KEY = "fr3Rr3Kyn91rkAGBMABtpXPeF8pAe1wW"
+            
+            self.llm = AzureMLChatOnlineEndpoint(
+                endpoint_url=ENDPOINT_URL,
+                endpoint_api_type=AzureMLEndpointApiType.serverless,
+                endpoint_api_key=API_KEY,
+                content_formatter=CustomOpenAIChatContentFormatter(),
 
+                model_kwargs={"temperature": 0.8},
+            )  
+
+        elif config.llm_model_name == 'custom-llama_3_8B':
+
+            from langchain_community.llms.azureml_endpoint import AzureMLEndpointApiType
+            from LLMs.Langchain_jais import CustomOpenAIChatContentFormatter, AzureMLChatOnlineEndpoint
+
+            ENDPOINT_URL = "https://Meta-Llama-3-8B-Instruct-lrrql.eastus2.models.ai.azure.com/v1/chat/completions"
+            API_KEY = "WnWsVRykDjU6562ou8GDKA2wm5aYkMt6"
+            
             self.llm = AzureMLChatOnlineEndpoint(
                 endpoint_url=ENDPOINT_URL,
                 endpoint_api_type=AzureMLEndpointApiType.serverless,
@@ -351,7 +368,49 @@ class NavAgent(BaseAgent):
 
                 model_kwargs={"temperature": 0.8},
             )   
+        elif config.llm_model_name == 'custom-phi_medium':
 
+            from langchain_community.llms.azureml_endpoint import AzureMLEndpointApiType
+            from LLMs.Langchain_jais import CustomOpenAIChatContentFormatter, AzureMLChatOnlineEndpoint
+
+            ENDPOINT_URL = "https://Phi-3-medium-128k-instruct-mllrp.eastus2.models.ai.azure.com/v1/chat/completions"
+            API_KEY = "TDw8BJCBfiytkhzhdHUrFz86MsgPCa8L"
+            
+            self.llm = AzureMLChatOnlineEndpoint(
+                endpoint_url=ENDPOINT_URL,
+                endpoint_api_type=AzureMLEndpointApiType.serverless,
+                endpoint_api_key=API_KEY,
+                content_formatter=CustomOpenAIChatContentFormatter(),
+
+                model_kwargs={"temperature": 0.8},
+                # timeout=60,  # Extend timeout to 60 seconds
+            )  
+        elif config.llm_model_name == 'custom-phi_mini':
+
+            from langchain_community.llms.azureml_endpoint import AzureMLEndpointApiType
+            from LLMs.Langchain_jais import CustomOpenAIChatContentFormatter, AzureMLChatOnlineEndpoint
+
+            ENDPOINT_URL = "https://Phi-3-5-mini-instruct-ctplm.eastus2.models.ai.azure.com/v1/chat/completions"
+            API_KEY = "DzTn6hsvc70Ws2F3E1VuNlXYnINCUguW"
+            
+            self.llm = AzureMLChatOnlineEndpoint(
+                endpoint_url=ENDPOINT_URL,
+                endpoint_api_type=AzureMLEndpointApiType.serverless,
+                endpoint_api_key=API_KEY,
+                content_formatter=CustomOpenAIChatContentFormatter(),
+
+                model_kwargs={
+                    "temperature": 0.8,
+                    "max_retries":5,
+                    "timeout": 100,
+                    "retry_strategy": {
+                        "backoff_factor": 2,
+                        "max_time": 300  # 5 minutes max
+                    }
+                },
+
+            )  
+ 
         # elif config.llm_model_name == 'custom-ALLaM':
 
         #     from langchain_community.llms.azureml_endpoint import AzureMLEndpointApiType
@@ -422,7 +481,6 @@ class NavAgent(BaseAgent):
             viewpointID = detail['viewpointID']
             viewpoint_ob = detail['feature']
             his_viewpoints += f"Step {i+1}. Viewpoint ID '{viewpointID}':\n {viewpoint_ob}\n\n"
-            time.sleep(20)
         return his_viewpoints
     
     def get_history(self, obs: dict, angle: str) -> str:
@@ -564,7 +622,7 @@ class NavAgent(BaseAgent):
         def _make_action(*args, **kwargs) -> str:
             '''Make single step action in MatterSim.'''
             # Get current observation
-            time.sleep(60)
+            time.sleep(40)
             cur_obs = self.env._get_obs()[0]
 
             # Get current feature
@@ -766,7 +824,7 @@ class NavAgent(BaseAgent):
         that invokes a controller with its plan. This is to keep the planner simple.
         """
         print('loop has started')
-        time.sleep(60)
+        time.sleep(40)
         self.action_maker = self._create_make_action_tool(self.llm)
         self.back_tracer = self._create_back_trace_tool(self.llm)
 
