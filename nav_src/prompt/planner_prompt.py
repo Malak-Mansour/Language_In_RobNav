@@ -30,7 +30,7 @@ Starting below, you should strictly follow this format:
 History: the history of previous steps you have taken
 Observation: the current observation of the environment
 Navigable viewpoints: the navigable viewpoints for the next step
-Thought: your thought on the next step. If the dataset is in Arabic, output the thoughts in Arabic.
+Thought: your thought on the next step. If the dataset is in Arabic language, output the thoughts in Arabic language. Make sure to output your thoughts in the same language as the instructions. Use Arabic language to show your reasoning in the Thought section.
 Final Answer: 'viepointID'
 ----
 
@@ -72,7 +72,7 @@ Starting below, you should follow this format:
 Action plan: the action plan describing the whole trajectory
 History: the history of previous steps you have taken
 Observation: the observations of each viewpoint along the trajectory
-Thought: your thought about the next step.  If the dataset is in Arabic, output the thoughts in Arabic.
+Thought: your thought about the next step. If the dataset is in Arabic language, output the thoughts in Arabic language. Make sure to output your thoughts in the same language as the instructions. Use Arabic language to show your reasoning in the Thought section.
 Final Answer: 'viewpointID'
 ----
 
@@ -103,11 +103,12 @@ Starting below, you should follow this format:
 
 Instruction: the instruction describing the whole trajectory
 Initial Observation: the initial observation of the environment
-Thought: I should start navigation according to the instruction.  If the dataset is in Arabic, output the thoughts in Arabic.
+Thought: I should start navigation according to the instruction. If the dataset is in Arabic language, output the thoughts in Arabic language. Make sure to output your thoughts in the same language as the instructions. Use Arabic language to show your reasoning in the Thought section.
+
 Action: action_maker
 Action Input: ""
 Observation: the result of the action
-Thought: you should always think about what to do next
+Thought: you should always think about what to do next. If the dataset is in Arabic language, output the thoughts in Arabic language. Make sure to output your thoughts in the same language as the instructions. Use Arabic language to show your reasoning in the Thought section.
 Action: the action to take, should be one of the tools [{tool_names}]
 Action Input: ""
 Observation: the result of the action
@@ -119,7 +120,7 @@ Begin!
 
 Instruction: {action_plan}
 Initial Observation: {init_observation}
-Thought: I should start navigation according to the instruction.  If the dataset is in Arabic, output the thoughts in Arabic.
+Thought: I should start navigation according to the instruction. If the dataset is in Arabic language, output the thoughts in Arabic language. Make sure to output your thoughts in the same language as the instructions. Use Arabic language to show your reasoning in the Thought section.
 Action: action_maker
 Action Input: ""
 Observation: {observation}
@@ -149,7 +150,7 @@ Starting below, you should follow this format:
 
 Instruction: the instruction describing the whole trajectory
 Initial Observation: the initial observation of the environment
-Thought: you should always think about what to do next
+Thought: you should always think about what to do next. If the dataset is in Arabic language, output the thoughts in Arabic language. Make sure to output your thoughts in the same language as the instructions. Use Arabic language to show your reasoning in the Thought section.
 Action: the action to take, must be one of the tools [{tool_names}]
 Action Input: "Viewpoint ID"
 Observation: the result of the action
@@ -188,7 +189,7 @@ Starting below, you should follow this format:
 
 Instruction: the instruction describing the whole trajectory
 Initial Observation: the initial observation of the environment
-Thought: you should always think about what to do next and why
+Thought: you should always think about what to do next and why. If the dataset is in Arabic language, output the thoughts in Arabic language. Make sure to output your thoughts in the same language as the instructions. Use Arabic language to show your reasoning in the Thought section.
 Action: the action to take, must be one of the tools [{tool_names}]
 Action Input: "Viewpoint ID"
 Observation: the result of the action
@@ -229,7 +230,7 @@ Starting below, you should follow this format:
 
 Instruction: an instruction of a trajectory which describes all observations and the actions should be taken
 Initial Observation: the initial observation of the environment
-Thought: you should always think about what to do next and why
+Thought: you should always think about what to do next and why. If the dataset is in Arabic language, output the thoughts in Arabic language. Make sure to output your thoughts in the same language as the instructions. Use Arabic language to show your reasoning in the Thought section.
 Action: the action to take, must be one of the tools [{tool_names}]
 Action Input: "Viewpoint ID"
 Observation: the result of the action
@@ -312,7 +313,7 @@ Starting below, you should follow this format:
 
 Instruction: [The trajectory instruction description for the task]
 Initial Observation: [First observation of the environment]
-Thought: Reflect on each step and determine the next action and why
+Thought: Reflect on each step and determine the next action and why. If the dataset is in Arabic language, output the thoughts in Arabic language. Make sure to output your thoughts in the same language as the instructions. Use Arabic language to show your reasoning in the Thought section.
 Action: [Specify the action to take, always `action_maker`, must be one of the tools [{tool_names}]]
 Action Input: [Current `viewpoint ID` from the dataset]
 Observation: [Next observed data based on the result of the action]
