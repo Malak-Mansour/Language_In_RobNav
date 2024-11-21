@@ -37,7 +37,7 @@ To Run the experiments please run the following code,
 - {model_name}: Your deployed model name. Use "custom-gpt" for any openai model
 - {output_folder_of_model}: what you want to call the folder that the output results are saved into
 - {number_of_trajectories}: number of trajectories that the robot will take from the map
-- {--translated}: write --translated if you want to use the Arabic translated dataset, and remove it if you will be using the regular english dataset
+- {--translated}: write --translated if you want to use the Arabic translated dataset, and remove it if you will be using the english dataset
 
 <pre>
 <code>
