@@ -70,8 +70,8 @@ For our paper, we ran the following experiments to perform consistent comparison
 
 | Experiment Name | LLM (API access from https://ai.azure.com/)                     | Dataset             |
 |-----------------|--------------------------|---------------------|
-| custom-gpt      | GPT-4o-mini              | English and Arabic  |
-| custom-llama_3_8B    | Llama-3-8B-Instruct   | English and Arabic  |
+| custom-gpt      | GPT-4o mini              | English and Arabic  |
+| custom-llama_3_8B    | Llama 3 8B Instruct   | English and Arabic  |
 | custom-phi    | Phi medium 14B Instruct 128K  | English and Arabic  |
 | custom-jais    | Jais 30B  | English and Arabic  |
 
