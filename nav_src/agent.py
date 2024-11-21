@@ -179,21 +179,37 @@ class NavAgent(BaseAgent):
         super().__init__(env)
         self.config = config
 
-        from langchain_community.llms.azureml_endpoint import AzureMLEndpointApiType, AzureMLOnlineEndpoint
-        from LLMs.formater import CustomContentFormatter
+        if config.llm_model_name == 'custom-gpt':
+            from langchain_community.chat_models.azure_openai import AzureChatOpenAI
+            BASE_URL = os.environ["ENDPOINT_URL"]
+            API_KEY = os.environ["API_KEY"]
+            DEPLOYMENT_NAME = "gpt-4o-mini"
+            API_VERSION = "2024-02-15-preview"
+            self.llm = AzureChatOpenAI(
+                openai_api_base=BASE_URL,
+                openai_api_version=API_VERSION,
+                deployment_name=DEPLOYMENT_NAME,
+                openai_api_key=API_KEY,
+                openai_api_type="azure",
+                temperature=0,
+            )
 
-        ENDPOINT_URL = os.environ["ENDPOINT_URL"]
-        API_KEY = os.environ["API_KEY"]
+        else:
+            from langchain_community.llms.azureml_endpoint import AzureMLEndpointApiType, AzureMLOnlineEndpoint
+            from LLMs.formater import CustomContentFormatter
 
-        self.llm = AzureMLOnlineEndpoint(
-            endpoint_url=ENDPOINT_URL,
-            endpoint_api_type=AzureMLEndpointApiType.serverless,
-            endpoint_api_key=API_KEY,
-            content_formatter=CustomContentFormatter(),
-            model_kwargs={"temperature": 0.8,
-                            "max_retries": 6,
-                            "timeout": 1000,},
-        )
+            ENDPOINT_URL = os.environ["ENDPOINT_URL"]
+            API_KEY = os.environ["API_KEY"]
+
+            self.llm = AzureMLOnlineEndpoint(
+                endpoint_url=ENDPOINT_URL,
+                endpoint_api_type=AzureMLEndpointApiType.serverless,
+                endpoint_api_key=API_KEY,
+                content_formatter=CustomContentFormatter(),
+                model_kwargs={"temperature": 0.8,
+                                "max_retries": 6,
+                                "timeout": 1000,},
+            )
 
 
         self.output_parser = NavGPTOutputParser()
@@ -208,7 +224,7 @@ class NavAgent(BaseAgent):
     def parse_action(self, llm_output: str) -> Tuple[str, str]:
         regex = r"(.*?)Final Answer:[\s]*(.*)"
         match = re.search(regex, llm_output, re.DOTALL)
-              
+
         if not match:
             raise ValueError(f"Could not parse LLM output: `{llm_output}`")
 
