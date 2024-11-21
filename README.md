@@ -3,7 +3,7 @@
 ## Introduction
 This is the repository of our AI701 course project at MBZUAI.
 
-We are inferencing different LLMs with the Arabic and English datasets (in this repository) to see if language affects the reasoning capabilities of the LLMs by comparing the NavGPT (https://github.com/GengzeZhou/NavGPT/tree/master) performance results.
+We are inferencing different LLMs with the Arabic and English datasets (in this repository) to see if language affects the reasoning capabilities of the LLMs by comparing the NavGPT performance results.
 
 
 ## Setup instructions
@@ -71,3 +71,6 @@ For our paper, we ran the following experiments to perform consistent comparison
 | custom-llama_3.1_8B    | Llama-3-1-8B-Instruct   | English and Arabic  |
 | custom-phi    | Phi medium 14B Instruct (4K or 128K ?)  | English and Arabic  |
 
+# Acknowledgments
+
+We would like to express our gratitude to the contributors of the NavGPT repository (https://github.com/GengzeZhou/NavGPT/tree/master) for their efforts in developing and maintaining this open-source resource, which was invaluable in the development of this project.
