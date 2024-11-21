@@ -73,6 +73,7 @@ For our paper, we ran the following experiments to perform consistent comparison
 | custom-gpt      | GPT-4o-mini              | English and Arabic  |
 | custom-llama_3_8B    | Llama-3-8B-Instruct   | English and Arabic  |
 | custom-phi    | Phi medium 14B Instruct 128K  | English and Arabic  |
+| custom-jais    | Jais 30B  | English and Arabic  |
 
 ## Acknowledgement
 A Large part of the code is used from [NavGPT](https://github.com/GengzeZhou/NavGPT). Many thanks for their wonderful work.
