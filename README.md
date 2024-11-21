@@ -2,20 +2,20 @@
 
 This is the repository of our AI701 course project at MBZUAI.
 
-This repository explores the role of language in robotic navigation tasks, focusing on reasoning and action planning using advanced language models. It examines the performance of Arabic and English in Vision-Language Navigation (VLN) tasks
+This repository explores the role of language in robotic navigation tasks, focusing on reasoning and action planning using advanced language models. It examines the performance of Arabic and English in Vision-Language Navigation (VLN) tasks.
 
 ## Prerequisites 
 ### Microsoft Azure account
 A Microsoft Azure account is required to set up and run the experiments in this project. Once you have setup your account visit the [Azure AI portal](https://ai.azure.com/) and deploy your model.
 
-You will need the ENDPOINT URL and API key for your deployed model and add them to your environment variables: 
+You will need the ENDPOINT URL and API key for your deployed model. Add them to your environment variables: 
 <pre>
 <code>
-  # prepare your Endpoint URL and API key for (for linux)
+  # prepare your Endpoint URL and API key (for linux)
   export ENDPOINT_URL="{ENDPOINT-URL}"
   export API_KEY="{API-KEY}"
 
-  # prepare your Endpoint URL and API key for (for windows)
+  # prepare your Endpoint URL and API key (for windows)
   set ENDPOINT_URL="{ENDPOINT-URL}"
   set API_KEY="{API-KEY}"
 </code>
@@ -34,7 +34,7 @@ Run the following to setup the conda environment and install the requirements:
 
 ## Usage 
 To Run the experiments please run the following code, 
-- {model_name}: Your deployed model name. Use "custom-gpt" for any openai model
+- {model_name}: your deployed model name. Use "custom-gpt" for any openai model
 - {output_folder_of_model}: what you want to call the folder that the output results are saved into
 - {number_of_trajectories}: number of trajectories that the robot will take from the map
 - {--translated}: write --translated if you want to use the Arabic translated dataset, and remove it if you will be using the english dataset
@@ -52,12 +52,12 @@ To Run the experiments please run the following code,
 
 
 
-Here is an example of an experiment with Llama 3.1 8B model, Arabic dataset, and using _R2R_val_unseen_instr_100_: the shortened version of the annotations directory that contains the translated scene for inference:
+Here is an example of an experiment with Llama 3 8B model, Arabic dataset, and using _R2R_val_unseen_instr_100_: the shortened version of the annotations directory that contains the translated scene for inference:
 <pre>
 <code>
  cd nav_src
-  python NavGPT.py --llm_model_name custom-llama_3.1_8B \
-    --output_dir ../datasets/R2R/exprs/llama_3.1_8B_ar \
+  python NavGPT.py --llm_model_name custom-llama_3_8B \
+    --output_dir ../datasets/R2R/exprs/llama_3_8B_ar \
     --val_env_name R2R_val_unseen_instr_100 \
     --iters 100 --translated 
 </code>
@@ -71,8 +71,8 @@ For our paper, we ran the following experiments to perform consistent comparison
 | Experiment Name | LLM (API access from https://ai.azure.com/)                     | Dataset             |
 |-----------------|--------------------------|---------------------|
 | custom-gpt      | GPT-4o-mini              | English and Arabic  |
-| custom-llama_3.1_8B    | Llama-3-1-8B-Instruct   | English and Arabic  |
-| custom-phi    | Phi medium 14B Instruct (4K or 128K ?)  | English and Arabic  |
+| custom-llama_3_8B    | Llama-3-8B-Instruct   | English and Arabic  |
+| custom-phi    | Phi medium 14B Instruct 128K  | English and Arabic  |
 
 ## Acknowledgement
 A Large part of the code is used from [NavGPT](https://github.com/GengzeZhou/NavGPT). Many thanks for their wonderful work.
