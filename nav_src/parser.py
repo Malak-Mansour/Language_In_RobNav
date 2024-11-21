@@ -7,7 +7,7 @@ def parse_args():
 
     # datasets
     parser.add_argument('--root_dir', type=str, default='../datasets')
-    parser.add_argument('--translated', type=bool, default=False)
+    parser.add_argument('--translated', action='store_true', default=False)
     parser.add_argument('--dataset', type=str, default='r2r', choices=['r2r', 'r4r','r2r_t'])
     parser.add_argument('--output_dir', type=str, default='../datasets/R2R/exprs/gpt-3.5-turbo', help='experiment id')
     # parser.add_argument('--output_dir', type=str, default='../datasets/R2R/exprs/LlaMA-2-13b-test', help='experiment id')
