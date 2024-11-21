@@ -55,7 +55,7 @@ Observation: {observation}
 Update history with the new observation:"""
 
 MAKE_ACTION_TOOL_NAME = "action_maker"
-MAKE_ACTION_TOOL_DESCRIPTION = f'Can be used to move to next adjacent viewpoint.\nThe input to this tool should be a viewpoint ID string of the next viewpoint you wish to visit. For example:\nAction: action_maker\nAction Input: "4a153b13a3f6424784cb8e5dabbb3a2c".'
+MAKE_ACTION_TOOL_DESCRIPTION = f'Can be used to move to next adjacent viewpoint.\nThe input to this tool should be a viewpoint ID string of the next viewpoint you wish to visit. For example:\nAction: action_maker\nAction Input:"4a153b13a3f6424784cb8e5dabbb3a2c".'
 
 BACK_TRACE_PROMPT = """You are an agent following an action plan to navigation in indoor environment.
 
@@ -143,7 +143,7 @@ You should always use the action_maker at the begining of navigation. If you are
 
 Here are the descriptions of these tools: {tool_descriptions}
 
-The viewpoint ID is a string of 12 characters, for example '4a153b13a3f6424784cb8e5dabbb3a2c'. You are very strict to the viewpoint ID and will never fabricate nonexistent IDs. 
+The viewpoint ID is a string of 12 characters, for example "4a153b13a3f6424784cb8e5dabbb3a2c". You are very strict to the viewpoint ID and will never fabricate nonexistent IDs. 
 
 ----
 Starting below, you should follow this format:
@@ -182,7 +182,7 @@ You should always use the action_maker at the begining of navigation. Show your 
 
 Here are the descriptions of these tools: {tool_descriptions}
 
-The viewpoint ID is a string of 12 characters, for example '4a153b13a3f6424784cb8e5dabbb3a2c'. You are very strict to the viewpoint ID and will never fabricate nonexistent IDs. 
+The viewpoint ID is a string of 12 characters, for example "4a153b13a3f6424784cb8e5dabbb3a2c" . You are very strict to the viewpoint ID and will never fabricate nonexistent IDs. 
 
 ----
 Starting below, you should follow this format:
@@ -258,7 +258,7 @@ Show your reasoning in the Thought section. If the dataset is in Arabic, output 
 
 Follow the given format and use provided tools.
 {tool_descriptions}
-Do not fabricate nonexistent viewpoint IDs.
+Do not fabricate nonexistent viewpoint IDs. Do not choose directions that have viewpoint IDs none
 
 ----
 Starting below, you should follow this format:
@@ -300,7 +300,7 @@ Your task:
 - For `Action Input`, input only the `viewpoint ID` derived from observation data, aligning with the instruction.
 - At each step, determine if you've reached the destination. If yes, stop and output `Final Answer: Finished!`.
 - If not, continue by considering your location and the next viewpoint based on the instruction, using the action_maker tool.
-Show your reasoning in the Thought section. If the dataset is in Arabic, output the thoughts in Arabic.
+Use Arabic to show your reasoning in the Thought section.
 
 
 Follow the given format and use provided tools.

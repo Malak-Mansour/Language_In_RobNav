@@ -5,7 +5,7 @@ API_keys.txt
 __pycache__/
 *.py[cod]
 
-# experiments
 
-\datasets\R2R\exprs
+datasets/R2R/exprs
+datasets/R2R_T/exprs
 

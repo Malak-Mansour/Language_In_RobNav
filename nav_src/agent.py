@@ -27,6 +27,7 @@ from langchain.schema import (
 )
 from langchain.base_language import BaseLanguageModel
 import time
+import os
 
 from langchain.agents.mrkl.prompt import FORMAT_INSTRUCTIONS
 
@@ -177,281 +178,23 @@ class NavAgent(BaseAgent):
         """
         super().__init__(env)
         self.config = config
-        if config.llm_model_name.split('-')[0] == 'gpt':
-            self.llm = OpenAI(
-                temperature=config.temperature,
-                model_name=config.llm_model_name,
-            )
-        elif config.llm_model_name == 'llama-2-13b':
-            from LLMs.Langchain_llama import Custom_Llama
-            ckpt_dir = "LLMs/llama/llama-2-13b"
-            tokenizer_path = "LLMs/llama/tokenizer.model"
-            self.llm = Custom_Llama.from_model_id(
-                temperature=config.temperature,
-                ckpt_dir = ckpt_dir,
-                tokenizer_path = tokenizer_path,
-                max_seq_len = 8000,
-                max_gen_len = 500,
-                max_batch_size = 1,
-            )
 
-        elif config.llm_model_name == 'custom-gpt':
-            from langchain_community.chat_models.azure_openai import AzureChatOpenAI
-            BASE_URL = "https://ai-malakmansour0093ai939299253478.openai.azure.com/"
-            API_KEY = "8IGmt7raN2eCyC22OxPNX5xm4MYKPQdBZq0WkqHOWUDc2cqcCyA2JQQJ99AKACHYHv6XJ3w3AAAAACOGcuHo"
-            DEPLOYMENT_NAME = "gpt-4o-mini"
-            API_VERSION = "2024-02-15-preview"
+        from langchain_community.llms.azureml_endpoint import AzureMLEndpointApiType, AzureMLOnlineEndpoint
+        from LLMs.formater import CustomContentFormatter
 
-            self.llm = AzureChatOpenAI(
-                openai_api_base=BASE_URL,
-                openai_api_version=API_VERSION,
-                deployment_name=DEPLOYMENT_NAME,
-                openai_api_key=API_KEY,
-                openai_api_type="azure",
-                temperature=0,
-            )
-            # from LLMs.Langchain_gpt import Custom_GPT
-            # BASE_URL = "https://ai-baheytharwat4839ai592784027451.openai.azure.com"
-            # API_KEY = "AFYuHGT8vM5hetqMaZwtszWIFtnuoHRfUVNWoV8ldNmJ6kLxIUPdJQQJ99AKACHYHv6XJ3w3AAAAACOGSKFX"
-            # DEPLOYMENT_NAME = "gpt-4o-mini"
-            # API_VERSION = "2024-02-15-preview"
-            # self.llm = Custom_GPT.from_model_id(
-            #     BASE_URL=BASE_URL,
-            #     API_KEY=API_KEY,
-            #     DEPLOYMENT_NAME=DEPLOYMENT_NAME,
-            #     API_VERSION=API_VERSION,
-            #     temperature=config.temperature,
-            #     max_seq_len = 8000,
-            #     max_gen_len = 500,
-            #     max_batch_size = 1,
-            # )
+        ENDPOINT_URL = os.environ["ENDPOINT_URL"]
+        API_KEY = os.environ["API_KEY"]
 
-        elif config.llm_model_name == 'custom-phi_small':
-            # from langchain_community.llms.azureml_endpoint import AzureMLEndpointApiType, AzureMLOnlineEndpoint
-            # from LLMs.Langchain_jais import CustomOpenAIContentFormatter
+        self.llm = AzureMLOnlineEndpoint(
+            endpoint_url=ENDPOINT_URL,
+            endpoint_api_type=AzureMLEndpointApiType.serverless,
+            endpoint_api_key=API_KEY,
+            content_formatter=CustomContentFormatter(),
+            model_kwargs={"temperature": 0.8,
+                            "max_retries": 6,
+                            "timeout": 1000,},
+        )
 
-            # ENDPOINT_URL = "https://jais-30b-chat-gftep.eastus2.models.ai.azure.com/v1/chat/completions"
-            # API_KEY = "1jtb7qaQZL3NIcgYrH7UyKCIXrPbb4Xv"
-
-            # self.llm = AzureMLOnlineEndpoint(
-            #     endpoint_url=ENDPOINT_URL,
-            #     endpoint_api_type=AzureMLEndpointApiType.serverless,
-            #     endpoint_api_key=API_KEY,
-            #     content_formatter=CustomOpenAIContentFormatter(),
-            #     model_kwargs={"temperature": 0.8},
-            # )
-
-            from langchain_community.llms.azureml_endpoint import AzureMLEndpointApiType
-            from LLMs.Langchain_jais import CustomOpenAIChatContentFormatter, AzureMLChatOnlineEndpoint
-
-            ENDPOINT_URL = "https://Phi-3-small-128k-instruct-zcbmw.eastus2.models.ai.azure.com/v1/chat/completions"
-            API_KEY = "CESJ9MWoFdSAB43T8v1NdzpklFQLLuoN"
-
-            self.llm = AzureMLChatOnlineEndpoint(
-                endpoint_url=ENDPOINT_URL,
-                endpoint_api_type=AzureMLEndpointApiType.serverless,
-                endpoint_api_key=API_KEY,
-                content_formatter=CustomOpenAIChatContentFormatter(),
-
-                model_kwargs={"temperature": 0.8},
-            )
-
-            
-            # ENDPOINT_URL = "https://jais-30b-chat-dgqtj.eastus2.models.ai.azure.com/v1/chat/completions"
-            # API_KEY = "aMihS2FYjiJWthzcL2ONuyOfJr1bnAmJ"
-            # self.llm = Custom_Jais.from_model_id(
-            #     ENDPOINT_URL=ENDPOINT_URL,
-            #     API_KEY=API_KEY,
-            #     temperature=config.temperature,
-            #     max_seq_len = 8000,
-            #     max_gen_len = 500,
-            #     max_batch_size = 1,
-            # )
-
-
-        elif config.llm_model_name == 'custom-mistral':
-
-            from langchain_community.llms.azureml_endpoint import AzureMLEndpointApiType
-            from LLMs.Langchain_jais import CustomOpenAIChatContentFormatter, AzureMLChatOnlineEndpoint
-
-            ENDPOINT_URL = "https://Mistral-large-2407-qwqny.eastus2.models.ai.azure.com/v1/chat/completions"
-            API_KEY = "wfdqE2WtZwyIsCSE96d798NmpB5GHgtb"
-
-            self.llm = AzureMLChatOnlineEndpoint(
-                endpoint_url=ENDPOINT_URL,
-                endpoint_api_type=AzureMLEndpointApiType.serverless,
-                endpoint_api_key=API_KEY,
-                content_formatter=CustomOpenAIChatContentFormatter(),
-
-                model_kwargs={"temperature": 0.8},
-            )
-        elif config.llm_model_name == 'custom-llama_3.1_70B':
-
-            from langchain_community.llms.azureml_endpoint import AzureMLEndpointApiType
-            from LLMs.Langchain_jais import CustomOpenAIChatContentFormatter, AzureMLChatOnlineEndpoint
-
-            ENDPOINT_URL = "https://Meta-Llama-3-1-70B-Instruct-qjzm.eastus2.models.ai.azure.com/v1/chat/completions"
-            API_KEY = "LO4fyule3Ma3lOaf47ZI5XAskPvy8npc"
-
-            self.llm = AzureMLChatOnlineEndpoint(
-                endpoint_url=ENDPOINT_URL,
-                endpoint_api_type=AzureMLEndpointApiType.serverless,
-                endpoint_api_key=API_KEY,
-                content_formatter=CustomOpenAIChatContentFormatter(),
-
-                model_kwargs={"temperature": 0.8},
-            )
-        elif config.llm_model_name == 'custom-llama_3.2_11B':
-
-            from langchain_community.llms.azureml_endpoint import AzureMLEndpointApiType
-            from LLMs.Langchain_jais import CustomOpenAIChatContentFormatter, AzureMLChatOnlineEndpoint
-
-            ENDPOINT_URL = "https://Llama-3-2-11B-Vision-Instruct-hm.eastus2.models.ai.azure.com/v1/chat/completions"
-            API_KEY = "totUgGfCmiQfsEbDgwzZ3are744sNMih"
-
-            self.llm = AzureMLChatOnlineEndpoint(
-                endpoint_url=ENDPOINT_URL,
-                endpoint_api_type=AzureMLEndpointApiType.serverless,
-                endpoint_api_key=API_KEY,
-                content_formatter=CustomOpenAIChatContentFormatter(),
-
-                model_kwargs={"temperature": 0.8},
-            )
-
-        elif config.llm_model_name == 'custom-llama_2_13B':
-
-            from langchain_community.llms.azureml_endpoint import AzureMLEndpointApiType
-            from LLMs.Langchain_jais import CustomOpenAIChatContentFormatter, AzureMLChatOnlineEndpoint
-
-            ENDPOINT_URL = "https://Llama-2-13b-chat-ifwvb.eastus2.models.ai.azure.com/v1/chat/completions"
-            API_KEY = "ZsNFyWx0AP30Mm7ypwtWO1O7HQTQg1Pi"
-
-            self.llm = AzureMLChatOnlineEndpoint(
-                endpoint_url=ENDPOINT_URL,
-                endpoint_api_type=AzureMLEndpointApiType.serverless,
-                endpoint_api_key=API_KEY,
-                content_formatter=CustomOpenAIChatContentFormatter(),
-
-                model_kwargs={"temperature": 0.8},
-            )            
-        
-        elif config.llm_model_name == 'custom-llama_3.1_8B':
-
-            from langchain_community.llms.azureml_endpoint import AzureMLEndpointApiType
-            from LLMs.Langchain_jais import CustomOpenAIChatContentFormatter, AzureMLChatOnlineEndpoint
-
-            ENDPOINT_URL = "https://Meta-Llama-3-1-8B-Instruct-tsoyk.eastus2.models.ai.azure.com/v1/chat/completions"
-            API_KEY = "fr3Rr3Kyn91rkAGBMABtpXPeF8pAe1wW"
-            
-            self.llm = AzureMLChatOnlineEndpoint(
-                endpoint_url=ENDPOINT_URL,
-                endpoint_api_type=AzureMLEndpointApiType.serverless,
-                endpoint_api_key=API_KEY,
-                content_formatter=CustomOpenAIChatContentFormatter(),
-
-                model_kwargs={"temperature": 0.8},
-            )  
-
-        elif config.llm_model_name == 'custom-llama_3_8B':
-
-            from langchain_community.llms.azureml_endpoint import AzureMLEndpointApiType
-            from LLMs.Langchain_jais import CustomOpenAIChatContentFormatter, AzureMLChatOnlineEndpoint
-
-            ENDPOINT_URL = "https://Meta-Llama-3-8B-Instruct-lrrql.eastus2.models.ai.azure.com/v1/chat/completions"
-            API_KEY = "WnWsVRykDjU6562ou8GDKA2wm5aYkMt6"
-            
-            self.llm = AzureMLChatOnlineEndpoint(
-                endpoint_url=ENDPOINT_URL,
-                endpoint_api_type=AzureMLEndpointApiType.serverless,
-                endpoint_api_key=API_KEY,
-                content_formatter=CustomOpenAIChatContentFormatter(),
-
-                model_kwargs={"temperature": 0.8},
-            )   
-        elif config.llm_model_name == 'custom-phi_medium':
-
-            from langchain_community.llms.azureml_endpoint import AzureMLEndpointApiType
-            from LLMs.Langchain_jais import CustomOpenAIChatContentFormatter, AzureMLChatOnlineEndpoint
-
-            ENDPOINT_URL = "https://Phi-3-medium-128k-instruct-mllrp.eastus2.models.ai.azure.com/v1/chat/completions"
-            API_KEY = "TDw8BJCBfiytkhzhdHUrFz86MsgPCa8L"
-            
-            self.llm = AzureMLChatOnlineEndpoint(
-                endpoint_url=ENDPOINT_URL,
-                endpoint_api_type=AzureMLEndpointApiType.serverless,
-                endpoint_api_key=API_KEY,
-                content_formatter=CustomOpenAIChatContentFormatter(),
-
-                model_kwargs={"temperature": 0.8},
-                # timeout=60,  # Extend timeout to 60 seconds
-            )  
-        elif config.llm_model_name == 'custom-phi_mini':
-
-            from langchain_community.llms.azureml_endpoint import AzureMLEndpointApiType
-            from LLMs.Langchain_jais import CustomOpenAIChatContentFormatter, AzureMLChatOnlineEndpoint
-
-            ENDPOINT_URL = "https://Phi-3-5-mini-instruct-ctplm.eastus2.models.ai.azure.com/v1/chat/completions"
-            API_KEY = "DzTn6hsvc70Ws2F3E1VuNlXYnINCUguW"
-            
-            self.llm = AzureMLChatOnlineEndpoint(
-                endpoint_url=ENDPOINT_URL,
-                endpoint_api_type=AzureMLEndpointApiType.serverless,
-                endpoint_api_key=API_KEY,
-                content_formatter=CustomOpenAIChatContentFormatter(),
-
-                model_kwargs={
-                    "temperature": 0.8,
-                    "max_retries":5,
-                    "timeout": 100,
-                    "retry_strategy": {
-                        "backoff_factor": 2,
-                        "max_time": 300  # 5 minutes max
-                    }
-                },
-
-            )  
- 
-        # elif config.llm_model_name == 'custom-ALLaM':
-
-        #     from langchain_community.llms.azureml_endpoint import AzureMLEndpointApiType
-        #     from LLMs.Langchain_jais import CustomOpenAIChatContentFormatter, AzureMLChatOnlineEndpoint
-
-        #     ENDPOINT_URL = ""
-        #     API_KEY = ""
-
-        #     self.llm = AzureMLChatOnlineEndpoint(
-        #         endpoint_url=ENDPOINT_URL,
-        #         endpoint_api_type=AzureMLEndpointApiType.serverless,
-        #         endpoint_api_key=API_KEY,
-        #         content_formatter=CustomOpenAIChatContentFormatter(),
-
-        #         model_kwargs={"temperature": 0.8},
-        #     )
-
-
-
-
-
-        # elif config.llm_model_name == 'Vicuna-v1.5-13b':
-        #     from LLMs.Langchain_Vicuna import Custom_Vicuna
-        #     self.llm = Custom_Vicuna.from_config(
-        #         config = config,
-        #     )
-        # elif config.llm_model_name == 'FlanT5XXL':
-        #     from LLMs.Langchain_FlanT5 import Custom_FlanT5
-        #     self.llm = Custom_FlanT5.from_config(
-        #         config = config,
-        #     )
-        # elif config.llm_model_name == 'Emu-14B':
-        #     from LLMs.Langchain_Emu import Custom_Emu
-        #     self.llm = Custom_Emu.from_config(
-        #         config = config,
-        #     )
-        # else:
-        #     from LLMs.Langchain_InstructBLIP import Custom_NavGPT_InstructBLIP
-        #     self.llm = Custom_NavGPT.from_config(
-        #         config = config,
-        #     )
 
         self.output_parser = NavGPTOutputParser()
         self.agent_executor = self.create_vln_agent()
@@ -465,6 +208,7 @@ class NavAgent(BaseAgent):
     def parse_action(self, llm_output: str) -> Tuple[str, str]:
         regex = r"(.*?)Final Answer:[\s]*(.*)"
         match = re.search(regex, llm_output, re.DOTALL)
+              
         if not match:
             raise ValueError(f"Could not parse LLM output: `{llm_output}`")
 
@@ -823,7 +567,6 @@ class NavAgent(BaseAgent):
         rather than a top-level planner
         that invokes a controller with its plan. This is to keep the planner simple.
         """
-        print('loop has started')
         time.sleep(40)
         self.action_maker = self._create_make_action_tool(self.llm)
         self.back_tracer = self._create_back_trace_tool(self.llm)

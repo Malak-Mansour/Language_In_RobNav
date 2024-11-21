@@ -1,5 +1,6 @@
 import json
 import os
+import time
 
 class BaseAgent(object):
     ''' Base class for an REVERIE agent to generate and save trajectories. '''
@@ -38,15 +39,21 @@ class BaseAgent(object):
         if iters is not None:
             # For each time, it will run the first 'iters' iterations. (It was shuffled before)
             for i in range(iters):
-                for traj in self.rollout(**kwargs):
-                    self.loss = 0
-                    self.results[traj['instr_id']] = traj
-                    preds_detail = self.get_results(detailed_output=True)
-                    json.dump(
-                    preds_detail,
-                    open(os.path.join(self.config.log_dir, 'runtime.json'), 'w'),
-                    sort_keys=True, indent=4, separators=(',', ': ')
-                    )
+                try:
+                    for traj in self.rollout(**kwargs):
+                        self.loss = 0
+                        self.results[traj['instr_id']] = traj
+                        preds_detail = self.get_results(detailed_output=True)
+                        json.dump(
+                        preds_detail,
+                        open(os.path.join(self.config.log_dir, 'runtime.json'), 'w'),
+                        sort_keys=True, indent=4, separators=(',', ': ')
+                        )
+                except Exception as e:
+                    time.sleep(300)
+                    with open(os.path.join(self.config.log_dir, 'debug.txt'), "a") as myfile:
+                        myfile.write(str(i)+"\t"+str(e)+"\n")
+                        continue    
         else:   # Do a full round
             while True:
                 for traj in self.rollout(**kwargs):
