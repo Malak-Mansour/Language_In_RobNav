@@ -2,7 +2,7 @@
 
 This is the repository of our AI701 course project at MBZUAI.
 
-This repository builds upon [NavGPT](https://github.com/GengzeZhou/NavGPT) to explore the role of language in robotic navigation tasks, focusing on reasoning and action planning using advanced language models. It examines the performance of Arabic and English in Vision-Language Navigation (VLN) tasks
+This repository builds upon explores the role of language in robotic navigation tasks, focusing on reasoning and action planning using advanced language models. It examines the performance of Arabic and English in Vision-Language Navigation (VLN) tasks
 
 ## Prerequisites 
 ### Microsoft Azure account
@@ -73,4 +73,7 @@ For our paper, we ran the following experiments to perform consistent comparison
 | custom-gpt      | GPT-4o-mini              | English and Arabic  |
 | custom-llama_3.1_8B    | Llama-3-1-8B-Instruct   | English and Arabic  |
 | custom-phi    | Phi medium 14B Instruct (4K or 128K ?)  | English and Arabic  |
+
+## Acknowledgement
+A Large part of the code is used from [NavGPT](https://github.com/GengzeZhou/NavGPT). Many thanks for their wonderful work.
 
