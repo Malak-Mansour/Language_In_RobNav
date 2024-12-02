@@ -76,5 +76,5 @@ For our paper, we ran the following experiments to perform consistent comparison
 | custom-jais    | Jais 30B  | English and Arabic  |
 
 ## Acknowledgement
-A Large part of the code is used from [NavGPT](https://github.com/GengzeZhou/NavGPT). Many thanks for their wonderful work.
+A large part of the code is used from [NavGPT](https://github.com/GengzeZhou/NavGPT). Many thanks for their wonderful work.
 
