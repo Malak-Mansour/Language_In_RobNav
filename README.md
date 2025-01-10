@@ -1,7 +1,5 @@
 # Does Language Affect Reasoning Tasks in Robotic Navigation?
 
-This is the repository of our AI701 course project at MBZUAI.
-
 This repository explores the role of language in robotic navigation tasks, focusing on reasoning and action planning using advanced language models. It examines the performance of Arabic and English in Vision-Language Navigation (VLN) tasks.
 
 ## Prerequisites 
