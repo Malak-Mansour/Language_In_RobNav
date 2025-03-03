@@ -1,4 +1,4 @@
-# Does Language Affect Reasoning Tasks in Robotic Navigation?
+# Language and Planning in Robotic Navigation: A Multilingual Evaluation of State-of-the-Art Models
 
 This repository explores the role of language in robotic navigation tasks, focusing on reasoning and action planning using advanced language models. It examines the performance of Arabic and English in Vision-Language Navigation (VLN) tasks.
 
